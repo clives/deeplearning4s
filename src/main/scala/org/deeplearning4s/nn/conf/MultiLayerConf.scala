@@ -1,4 +1,4 @@
-package org.deeplearning4s.nn.multilayer
+package org.deeplearning4s.nn.conf
 
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration.Builder
 import org.deeplearning4j.nn.conf.`override`.ConfOverride
@@ -6,19 +6,19 @@ import org.deeplearning4j.nn.conf.{InputPreProcessor, MultiLayerConfiguration, N
 
 import scala.collection.JavaConverters._
 
-object MultiLayerConf {
-  def apply(
-             hiddenLayerSizes: Array[Int],
-             useDropConnect: Boolean = false,
-             pretrain: Boolean = false,
-             useRBMPropUpAsActivations: Boolean = false,
-             dampingFactor: Double = 100D,
-             backward: Boolean = false,
-             inputPreProcessors: Map[Int, InputPreProcessor] = Map.empty,
-             preProcessors: Map[Int, OutputPreProcessor] = Map.empty,
-             confs: Seq[NeuralNetConfiguration] = Nil,
-             confOverrides: Map[Int, ConfOverride] = Map.empty
-             ): MultiLayerConfiguration = {
+case class MultiLayerConf(
+                           hiddenLayerSizes: Array[Int],
+                           useDropConnect: Boolean = false,
+                           pretrain: Boolean = false,
+                           useRBMPropUpAsActivations: Boolean = false,
+                           dampingFactor: Double = 100D,
+                           backward: Boolean = false,
+                           inputPreProcessors: Map[Int, InputPreProcessor] = Map.empty,
+                           preProcessors: Map[Int, OutputPreProcessor] = Map.empty,
+                           confs: Seq[NeuralNetConfiguration] = Nil,
+                           confOverrides: Map[Int, ConfOverride] = Map.empty
+                           ) {
+  def asJava: MultiLayerConfiguration = {
     val builder = new Builder()
       .hiddenLayerSizes(hiddenLayerSizes: _*)
       .useDropConnect(useDropConnect)
