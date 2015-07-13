@@ -2,7 +2,7 @@ package org.deeplearning4j.nn.conf
 
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration.Builder
 import org.deeplearning4j.nn.conf.`override`.ConfOverride
-import org.deeplearning4s.nn.multilayer.MultiLayerConf
+import org.deeplearning4s.nn.conf.MultiLayerConf
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.scalatest.FlatSpec
 import scala.collection.JavaConverters._
@@ -36,7 +36,7 @@ class MultiLayerConfTest extends FlatSpec {
       preProcessors = preProcessorsV,
       confs = confsV,
       confOverrides = confOverridesV
-    )
+    ).asJava
 
     assert(mlc.hiddenLayerSizes == hiddenLayerSizesV)
     assert(mlc.useDropConnect == useDropConnectV)
