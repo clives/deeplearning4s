@@ -1,8 +1,8 @@
 package org.deeplearning4s.nn.conf
 
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration.Builder
+import org.deeplearning4j.nn.conf._
 import org.deeplearning4j.nn.conf.`override`.ConfOverride
-import org.deeplearning4j.nn.conf.{InputPreProcessor, MultiLayerConfiguration, NeuralNetConfiguration, OutputPreProcessor}
 
 import scala.collection.JavaConverters._
 
@@ -12,9 +12,9 @@ case class MultiLayerConf(
                            pretrain: Boolean = false,
                            useRBMPropUpAsActivations: Boolean = false,
                            dampingFactor: Double = 100D,
-                           backward: Boolean = false,
+                           backprop: Boolean = false,
                            inputPreProcessors: Map[Int, InputPreProcessor] = Map.empty,
-                           preProcessors: Map[Int, OutputPreProcessor] = Map.empty,
+                           outputPostProcessors: Map[Int, OutputPostProcessor] = Map.empty,
                            confs: Seq[NeuralNetConfiguration] = Nil,
                            confOverrides: Map[Int, ConfOverride] = Map.empty
                            ) {
@@ -25,9 +25,9 @@ case class MultiLayerConf(
       .pretrain(pretrain)
       .useRBMPropUpAsActivations(useRBMPropUpAsActivations)
       .dampingFactor(dampingFactor)
-      .backward(backward)
-      .inputPreProcessors(inputPreProcessors.map { case (i, p) => (int2Integer(i), p)}.toMap.asJava)
-      .preProcessors(preProcessors.map { case (i, p) => (int2Integer(i), p)}.toMap.asJava)
+      .backprop(backprop)
+      .inputPreProcessors(inputPreProcessors.map { case (i, p) => (int2Integer(i), p) }.toMap.asJava)
+      .outputPostProcessors(outputPostProcessors.map { case (i, p) => (int2Integer(i), p) }.toMap.asJava)
       .confs(confs.asJava)
 
     confOverrides.collect { case (i, co) =>
