@@ -5,6 +5,7 @@ import org.deeplearning4j.nn.conf.`override`.ConfOverride
 import org.deeplearning4s.nn.conf.MultiLayerConf
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.scalatest.FlatSpec
+
 import scala.collection.JavaConverters._
 
 class MultiLayerConfTest extends FlatSpec {
@@ -14,12 +15,16 @@ class MultiLayerConfTest extends FlatSpec {
     val pretrainV: Boolean = true
     val useRBMPropUpAsActivationsV: Boolean = true
     val dampingFactorV: Double = 1000D
-    val backwardV: Boolean = true
+    val backpropV: Boolean = true
     val inputPreProcessorsV: Map[Int, InputPreProcessor] = Map(1 -> new InputPreProcessor {
+      override def backprop(output: INDArray): INDArray = ???
+
       override def preProcess(input: INDArray): INDArray = ???
     })
-    val preProcessorsV: Map[Int, OutputPreProcessor] = Map(2 -> new OutputPreProcessor {
-      override def preProcess(output: INDArray): INDArray = ???
+    val preProcessorsV: Map[Int, OutputPostProcessor] = Map(2 -> new OutputPostProcessor {
+      override def backprop(input: INDArray): INDArray = ???
+
+      override def process(output: INDArray): INDArray = ???
     })
     val confsV: Seq[NeuralNetConfiguration] = List(new NeuralNetConfiguration())
     val confOverridesV: Map[Int, ConfOverride] = Map(1 -> new ConfOverride {
@@ -31,9 +36,9 @@ class MultiLayerConfTest extends FlatSpec {
       pretrain = pretrainV,
       useRBMPropUpAsActivations = useRBMPropUpAsActivationsV,
       dampingFactor = dampingFactorV,
-      backward = backwardV,
+      backprop = backpropV,
       inputPreProcessors = inputPreProcessorsV,
-      preProcessors = preProcessorsV,
+      outputPostProcessors = preProcessorsV,
       confs = confsV,
       confOverrides = confOverridesV
     ).asJava
@@ -43,9 +48,9 @@ class MultiLayerConfTest extends FlatSpec {
     assert(mlc.pretrain == pretrainV)
     assert(mlc.useRBMPropUpAsActivations == useRBMPropUpAsActivationsV)
     assert(mlc.dampingFactor == dampingFactorV)
-    assert(mlc.backward == backwardV)
-    assert(mlc.inputPreProcessors == inputPreProcessorsV.map{case (i,p) => Integer.valueOf(i)->p}.asJava)
-    assert(mlc.getProcessors == preProcessorsV.map{case (i,p) => Integer.valueOf(i)->p}.asJava)
+    assert(mlc.backprop == backpropV)
+    assert(mlc.inputPreProcessors == inputPreProcessorsV.map { case (i, p) => Integer.valueOf(i) -> p }.asJava)
+    assert(mlc.outputPostProcessors == preProcessorsV.map { case (i, p) => Integer.valueOf(i) -> p }.asJava)
     assert(mlc.confs == confsV.asJava)
   }
 }
