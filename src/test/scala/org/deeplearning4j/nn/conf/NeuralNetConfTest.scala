@@ -2,10 +2,11 @@ package org.deeplearning4j.nn.conf
 
 import org.deeplearning4j.nn.api.OptimizationAlgorithm
 import org.deeplearning4j.nn.conf.distribution.{Distribution, NormalDistribution}
-import org.deeplearning4j.nn.conf.layers.{Layer, RBM, SubsamplingLayer}
+import org.deeplearning4j.nn.conf.layers.{RBM => jRBM, SubsamplingLayer}
 import org.deeplearning4j.nn.conf.stepfunctions.StepFunction
 import org.deeplearning4j.nn.weights.WeightInit
 import org.deeplearning4s.nn.conf.LossFunction.Max
+import org.deeplearning4s.nn.conf.layers.RBM
 import org.deeplearning4s.nn.conf.{ActivationFunction, NeuralNetConf, Sigmoid}
 import org.nd4j.linalg.convolution.Convolution
 import org.scalatest.FlatSpec
@@ -14,13 +15,14 @@ import scala.collection.JavaConverters._
 
 class NeuralNetConfTest extends FlatSpec {
   "NeuralNetConf" should "set each property to MultiLayerConfiguration instance correctly" in {
-    val layer: Layer = new Layer {}
-    // values in Layer will override values in NeuralNetConf.
-    layer.setDropOut(2.0D)
+    val k: Int = 2
+    val layer = RBM(
+      hiddenUnit = jRBM.HiddenUnit.BINARY,
+      visibleUnit = jRBM.VisibleUnit.BINARY,
+      k = k)
     val sparsity: Double = 2f
     val useAdaGrad: Boolean = false
     val learningRate: Double = 1e-2D
-    val k: Int = 2
     val corruptionLevel: Double = 3e-2D
     val numIterations: Int = 200
     val momentum: Double = 1D
@@ -40,8 +42,8 @@ class NeuralNetConfTest extends FlatSpec {
     val nIn: Int = 0
     val nOut: Int = 0
     val activationFunction: ActivationFunction = Sigmoid
-    val visibleUnit: RBM.VisibleUnit = RBM.VisibleUnit.BINARY
-    val hiddenUnit: RBM.HiddenUnit = RBM.HiddenUnit.BINARY
+    val visibleUnit: jRBM.VisibleUnit = jRBM.VisibleUnit.BINARY
+    val hiddenUnit: jRBM.HiddenUnit = jRBM.HiddenUnit.BINARY
     val weightShape: Array[Int] = Array(4, 4)
     val kernelSize: Array[Int] = Array(2, 2)
     val stride: Array[Int] = Array(2, 2)
@@ -60,50 +62,52 @@ class NeuralNetConfTest extends FlatSpec {
     val updater: Updater = Updater.NONE
     val miniBatch: Boolean = false
 
-    val conf = NeuralNetConf(layer,
-      sparsity,
-      useAdaGrad,
-      learningRate,
-      k,
-      corruptionLevel,
-      numIterations,
-      momentum,
-      l2,
-      useRegularization,
-      momentumAfter,
-      resetAdaGradIterations,
-      dropOut,
-      applySparsity,
-      weightInit,
-      optimizationAlgo,
-      lossFunction,
-      constrainGradientToUnitNorm,
-      seed,
-      dist,
-      nIn,
-      nOut,
-      activationFunction,
-      visibleUnit,
-      hiddenUnit,
-      weightShape,
-      kernelSize,
-      stride,
-      padding,
-      batchSize,
-      numLineSearchIterations,
-      maxNumLineSearchIterations,
-      minimize,
-      convolutionType,
-      poolingType,
-      l1,
-      rmsDecay,
-      stepFunction,
-      useDropConnect,
-      rho,
-      updater,
-      miniBatch).asJava
+    val conf = NeuralNetConf(
+      layer = layer,
+      sparsity = sparsity,
+      useAdaGrad = useAdaGrad,
+      learningRate = learningRate,
+      k = k,
+      corruptionLevel = corruptionLevel,
+      numIterations = numIterations,
+      momentum = momentum,
+      l2 = l2,
+      useRegularization = useRegularization,
+      momentumAfter = momentumAfter,
+      resetAdaGradIterations = resetAdaGradIterations,
+      dropOut = dropOut,
+      applySparsity = applySparsity,
+      weightInit = weightInit,
+      optimizationAlgo = optimizationAlgo,
+      lossFunction = lossFunction,
+      constrainGradientToUnitNorm = constrainGradientToUnitNorm,
+      seed = seed,
+      dist = dist,
+      nIn = nIn,
+      nOut = nOut,
+      activationFunction = activationFunction,
+      visibleUnit = visibleUnit,
+      hiddenUnit = hiddenUnit,
+      weightShape = weightShape,
+      kernelSize = kernelSize,
+      stride = stride,
+      padding = padding,
+      batchSize = batchSize,
+      numLineSearchIterations = numLineSearchIterations,
+      maxNumLineSearchIterations = maxNumLineSearchIterations,
+      minimize = minimize,
+      convolutionType = convolutionType,
+      poolingType = poolingType,
+      l1 = l1,
+      rmsDecay = rmsDecay,
+      stepFunction = stepFunction,
+      useDropConnect = useDropConnect,
+      rho = rho,
+      updater = updater,
+      miniBatch = miniBatch
+    ).asJava
 
-    assert(conf.layer == layer)
+    assert(conf.layer == layer.asJava)
     assert(conf.getSparsity == sparsity)
     assert(conf.isUseAdaGrad == useAdaGrad)
     assert(conf.getLr == learningRate)
@@ -115,7 +119,7 @@ class NeuralNetConfTest extends FlatSpec {
     assert(conf.useRegularization == useRegularization)
     assert(conf.momentumAfter.asScala == momentumAfter)
     assert(conf.resetAdaGradIterations == resetAdaGradIterations)
-    assert(conf.dropOut == 2.0D)
+    assert(conf.dropOut == dropOut)
     assert(conf.applySparsity == applySparsity)
     assert(conf.getWeightInit == weightInit)
     assert(conf.optimizationAlgo == optimizationAlgo)
