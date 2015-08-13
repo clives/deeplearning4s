@@ -3,11 +3,12 @@ package org.deeplearning4s.nn.conf
 import org.deeplearning4j.nn.api.OptimizationAlgorithm
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration.Builder
 import org.deeplearning4j.nn.conf.distribution.{Distribution, NormalDistribution}
-import org.deeplearning4j.nn.conf.layers.{Layer, RBM, SubsamplingLayer}
+import org.deeplearning4j.nn.conf.layers.{RBM, SubsamplingLayer}
 import org.deeplearning4j.nn.conf.stepfunctions.StepFunction
 import org.deeplearning4j.nn.conf.{NeuralNetConfiguration, Updater}
 import org.deeplearning4j.nn.weights.WeightInit
 import org.deeplearning4s.nn.conf.LossFunction.{Custom, RECONSTRUCTION_CROSSENTROPY}
+import org.deeplearning4s.nn.conf.layers.Layer
 import org.nd4j.linalg.convolution.Convolution
 
 import scala.collection.JavaConverters._
@@ -63,7 +64,7 @@ case class NeuralNetConf(layer: Layer,
     }
 
     val conf = new Builder()
-      .layer(layer)
+      .layer(layer.asJava)
       .sparsity(sparsity)
       .useAdaGrad(useAdaGrad)
       .learningRate(learningRate)
