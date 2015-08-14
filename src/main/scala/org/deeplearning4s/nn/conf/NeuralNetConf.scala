@@ -39,11 +39,11 @@ case class NeuralNetConf(layer: Layer,
                          visibleUnit: RBM.VisibleUnit = RBM.VisibleUnit.BINARY,
                          hiddenUnit: RBM.HiddenUnit = RBM.HiddenUnit.BINARY,
                          weightShape: Array[Int] = null,
+                         timeSeriesLength: Int = 1,
                          kernelSize: Array[Int] = Array(2, 2),
                          stride: Array[Int] = Array(2, 2),
                          padding: Array[Int] = Array(0, 0),
                          batchSize: Int = 100,
-                         numLineSearchIterations: Int = 5,
                          maxNumLineSearchIterations: Int = 5,
                          minimize: Boolean = false,
                          convolutionType: Convolution.Type = Convolution.Type.VALID,
@@ -53,7 +53,7 @@ case class NeuralNetConf(layer: Layer,
                          stepFunction: StepFunction = null,
                          useDropConnect: Boolean = false,
                          rho: Double = 0D,
-                         updater: Updater = Updater.NONE,
+                         updater: Updater = Updater.ADAGRAD,
                          miniBatch: Boolean = false
                           ) {
   def asJava: NeuralNetConfiguration = {
@@ -92,10 +92,10 @@ case class NeuralNetConf(layer: Layer,
       .hiddenUnit(hiddenUnit)
       .weightShape(weightShape)
       .kernelSize(kernelSize: _*)
+      .timeSeriesLength(timeSeriesLength)
       .stride(stride)
       .padding(padding)
       .batchSize(batchSize)
-      .numLineSearchIterations(numIterations)
       .maxNumLineSearchIterations(maxNumLineSearchIterations)
       .minimize(minimize)
       .convolutionType(convolutionType)
