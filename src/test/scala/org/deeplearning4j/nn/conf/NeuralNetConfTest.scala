@@ -46,10 +46,10 @@ class NeuralNetConfTest extends FlatSpec {
     val hiddenUnit: jRBM.HiddenUnit = jRBM.HiddenUnit.BINARY
     val weightShape: Array[Int] = Array(4, 4)
     val kernelSize: Array[Int] = Array(2, 2)
+    val timeSeriesLength: Int = 1
     val stride: Array[Int] = Array(2, 2)
     val padding: Array[Int] = Array(1, 1)
     val batchSize: Int = 200
-    val numLineSearchIterations: Int = 100
     val maxNumLineSearchIterations: Int = 100
     val minimize: Boolean = true
     val convolutionType: Convolution.Type = Convolution.Type.VALID
@@ -90,10 +90,10 @@ class NeuralNetConfTest extends FlatSpec {
       hiddenUnit = hiddenUnit,
       weightShape = weightShape,
       kernelSize = kernelSize,
+      timeSeriesLength = 1,
       stride = stride,
       padding = padding,
       batchSize = batchSize,
-      numLineSearchIterations = numLineSearchIterations,
       maxNumLineSearchIterations = maxNumLineSearchIterations,
       minimize = minimize,
       convolutionType = convolutionType,
@@ -137,7 +137,6 @@ class NeuralNetConfTest extends FlatSpec {
     assert(conf.getStride == stride)
     assert(conf.getPadding == padding)
     assert(conf.batchSize == batchSize)
-    assert(conf.numLineSearchIterations == numIterations)
     assert(conf.maxNumLineSearchIterations == maxNumLineSearchIterations)
     assert(conf.minimize == minimize)
     assert(conf.convolutionType == convolutionType)
