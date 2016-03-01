@@ -3,7 +3,6 @@ package org.deeplearning4s.nn.conf
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration.Builder
 import org.deeplearning4j.nn.conf._
 import org.deeplearning4j.nn.conf.`override`.ConfOverride
-
 import scala.collection.JavaConverters._
 
 case class MultiLayerConf(

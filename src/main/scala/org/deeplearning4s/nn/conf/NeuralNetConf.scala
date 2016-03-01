@@ -42,7 +42,7 @@ case class NeuralNetConf(
     val ma = momentumAfter.map { case (i, d) => Integer.valueOf(i) -> (d: java.lang.Double) }.toMap.asJava
 
        
-    val conf = new Builder()
+    val conf = new Builder()  
       .layer(layer.asJava)
       .learningRate(learningRate)
       .iterations(numIterations)

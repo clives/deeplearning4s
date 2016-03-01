@@ -62,91 +62,59 @@ class NeuralNetConfTest extends FlatSpec {
     val updater: Updater = Updater.NONE
     val miniBatch: Boolean = false
 
+    /*
+        layer : Layer,
+    learningRate:  Double = 1e-1D,
+    numIterations: Int = 100,
+    momentum:  Double = 0.5D,
+    l2:  Double = 0f,
+    useRegularization: Boolean = false,
+    momentumAfter: Map[Int, Double] = Map.empty,
+    optimizationAlgo: OptimizationAlgorithm = OptimizationAlgorithm.CONJUGATE_GRADIENT,
+    constrainGradientToUnitNorm: Boolean = false,
+    seed:Long = System.currentTimeMillis(),
+    timeSeriesLength: Int = 1,
+    maxNumLineSearchIterations: Int = 5,
+    minimize: Boolean = false,
+    l1: Double = 0.0,
+    rmsDecay: Double = 0f,
+    stepFunction: StepFunction = null,
+    useDropConnect: Boolean = false,
+    rho: Double = 0D,
+    miniBatch: Boolean = false )*/
+    
+    
     val conf = NeuralNetConf(
       layer = layer,
-      sparsity = sparsity,
-      useAdaGrad = useAdaGrad,
-      learningRate = learningRate,
-      k = k,
-      corruptionLevel = corruptionLevel,
+      learningRate = learningRate,    
       numIterations = numIterations,
       momentum = momentum,
       l2 = l2,
       useRegularization = useRegularization,
-      momentumAfter = momentumAfter,
-      resetAdaGradIterations = resetAdaGradIterations,
-      dropOut = dropOut,
-      applySparsity = applySparsity,
-      weightInit = weightInit,
-      optimizationAlgo = optimizationAlgo,
-      lossFunction = lossFunction,
+      momentumAfter = momentumAfter,     
+      optimizationAlgo = optimizationAlgo,     
       constrainGradientToUnitNorm = constrainGradientToUnitNorm,
-      seed = seed,
-      dist = dist,
-      nIn = nIn,
-      nOut = nOut,
-      activationFunction = activationFunction,
-      visibleUnit = visibleUnit,
-      hiddenUnit = hiddenUnit,
-      weightShape = weightShape,
-      kernelSize = kernelSize,
-      timeSeriesLength = 1,
-      stride = stride,
-      padding = padding,
-      batchSize = batchSize,
+      seed = seed,      
+      timeSeriesLength = 1,     
       maxNumLineSearchIterations = maxNumLineSearchIterations,
-      minimize = minimize,
-      convolutionType = convolutionType,
-      poolingType = poolingType,
+      minimize = minimize,    
       l1 = l1,
       rmsDecay = rmsDecay,
       stepFunction = stepFunction,
       useDropConnect = useDropConnect,
       rho = rho,
-      updater = updater,
       miniBatch = miniBatch
     ).asJava
 
     assert(conf.layer == layer.asJava)
-    assert(conf.getSparsity == sparsity)
-    assert(conf.isUseAdaGrad == useAdaGrad)
-    assert(conf.getLr == learningRate)
-    assert(conf.k == k)
-    assert(conf.corruptionLevel == corruptionLevel)
     assert(conf.numIterations == numIterations)
-    assert(conf.momentum == momentum)
-    assert(conf.l2 == l2)
     assert(conf.useRegularization == useRegularization)
-    assert(conf.momentumAfter.asScala == momentumAfter)
-    assert(conf.resetAdaGradIterations == resetAdaGradIterations)
-    assert(conf.dropOut == dropOut)
-    assert(conf.applySparsity == applySparsity)
-    assert(conf.getWeightInit == weightInit)
     assert(conf.optimizationAlgo == optimizationAlgo)
-    assert(conf.lossFunction == lossFunction.value)
-    assert(conf.constrainGradientToUnitNorm == constrainGradientToUnitNorm)
     assert(conf.seed == seed)
-    assert(conf.dist == dist)
-    assert(conf.nIn == nIn)
-    assert(conf.nOut == nOut)
-    assert(conf.activationFunction == activationFunction.name)
-    assert(conf.getVisibleUnit == visibleUnit)
-    assert(conf.getHiddenUnit == hiddenUnit)
-    assert(conf.getWeightShape == weightShape)
-    assert(conf.getKernelSize == kernelSize)
-    assert(conf.getStride == stride)
-    assert(conf.getPadding == padding)
-    assert(conf.batchSize == batchSize)
     assert(conf.maxNumLineSearchIterations == maxNumLineSearchIterations)
     assert(conf.minimize == minimize)
-    assert(conf.convolutionType == convolutionType)
-    assert(conf.l1 == l1)
-    assert(conf.getCustomLossFunction == lossFunction.name)
-    assert(conf.rmsDecay == rmsDecay)
     assert(conf.stepFunction == stepFunction)
     assert(conf.useDropConnect == useDropConnect)
-    assert(conf.rho == rho)
-    assert(conf.updater == updater)
     assert(conf.miniBatch == miniBatch)
   }
 }

@@ -17,15 +17,11 @@ class MultiLayerConfTest extends FlatSpec {
     val dampingFactorV: Double = 1000D
     val backpropV: Boolean = true
     val inputPreProcessorsV: Map[Int, InputPreProcessor] = Map(1 -> new InputPreProcessor {
-      override def backprop(output: INDArray): INDArray = ???
+      def backprop(output: INDArray, miniBatchSize:Int): INDArray = ???
 
-      override def preProcess(input: INDArray): INDArray = ???
+      def preProcess(input: INDArray,miniBatchSize:Int): INDArray = ???
     })
-    val preProcessorsV: Map[Int, OutputPostProcessor] = Map(2 -> new OutputPostProcessor {
-      override def backprop(input: INDArray): INDArray = ???
-
-      override def process(output: INDArray): INDArray = ???
-    })
+    
     val confsV: Seq[NeuralNetConfiguration] = List(new NeuralNetConfiguration())
     val confOverridesV: Map[Int, ConfOverride] = Map(1 -> new ConfOverride {
       override def overrideLayer(i: Int, builder: Builder): Unit = ???
@@ -38,19 +34,15 @@ class MultiLayerConfTest extends FlatSpec {
       dampingFactor = dampingFactorV,
       backprop = backpropV,
       inputPreProcessors = inputPreProcessorsV,
-      outputPostProcessors = preProcessorsV,
+      //outputPostProcessors = preProcessorsV,
       confs = confsV,
       confOverrides = confOverridesV
     ).asJava
 
-    assert(mlc.hiddenLayerSizes == hiddenLayerSizesV)
-    assert(mlc.useDropConnect == useDropConnectV)
     assert(mlc.pretrain == pretrainV)
-    assert(mlc.useRBMPropUpAsActivations == useRBMPropUpAsActivationsV)
     assert(mlc.dampingFactor == dampingFactorV)
     assert(mlc.backprop == backpropV)
-    assert(mlc.inputPreProcessors == inputPreProcessorsV.map { case (i, p) => Integer.valueOf(i) -> p }.asJava)
-    assert(mlc.outputPostProcessors == preProcessorsV.map { case (i, p) => Integer.valueOf(i) -> p }.asJava)
+    assert(mlc.inputPreProcessors == inputPreProcessorsV.map { case (i, p) => Integer.valueOf(i) -> p }.asJava)  
     assert(mlc.confs == confsV.asJava)
   }
 }
