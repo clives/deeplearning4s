@@ -14,24 +14,24 @@ case class MultiLayerConf(
                            dampingFactor: Double = 100D,
                            backprop: Boolean = false,
                            inputPreProcessors: Map[Int, InputPreProcessor] = Map.empty,
-                           outputPostProcessors: Map[Int, OutputPostProcessor] = Map.empty,
+                          // outputPostProcessors: Map[Int, OutputPostProcessor] = Map.empty,
                            confs: Seq[NeuralNetConfiguration] = Nil,
                            confOverrides: Map[Int, ConfOverride] = Map.empty
                            ) {
   def asJava: MultiLayerConfiguration = {
     val builder = new Builder()
-      .hiddenLayerSizes(hiddenLayerSizes: _*)
-      .useDropConnect(useDropConnect)
+      //.hiddenLayerSizes(hiddenLayerSizes: _*)
+      //.useDropConnect(useDropConnect)
       .pretrain(pretrain)
-      .useRBMPropUpAsActivations(useRBMPropUpAsActivations)
+     // .useRBMPropUpAsActivations(useRBMPropUpAsActivations)
       .dampingFactor(dampingFactor)
       .backprop(backprop)
       .inputPreProcessors(inputPreProcessors.map { case (i, p) => (int2Integer(i), p) }.toMap.asJava)
-      .outputPostProcessors(outputPostProcessors.map { case (i, p) => (int2Integer(i), p) }.toMap.asJava)
+     // .outputPostProcessors(outputPostProcessors.map { case (i, p) => (int2Integer(i), p) }.toMap.asJava)
       .confs(confs.asJava)
 
     confOverrides.collect { case (i, co) =>
-      builder.`override`(i, co)
+      builder.getConfOverrides().put(i, co)
     }
     builder.build()
   }
